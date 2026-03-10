@@ -385,21 +385,34 @@ const AppPage = () => {
                 className="flex-1 font-heading text-lg"
                 disabled
               >
-                View Your Summary → (Coming Soon)
+              View Your Summary →
               </Button>
             </div>
           </>
         )}
 
-        {/* ─── STEP 4 & 5 placeholders ─── */}
-        {(currentStep === 4 || currentStep === 5) && (
+        {/* ─── STEP 4: Personal Summary ─── */}
+        {currentStep === 4 && (
+          <>
+            <PersonalSummary debts={debtInputs} surplus={surplusNum} onGoToStep={goToStep} />
+            <div className="flex items-center gap-4 mt-10">
+              <Button variant="outline" size="lg" onClick={() => goToStep(3)} className="gap-2">
+                <ArrowLeft size={16} />
+                Back
+              </Button>
+            </div>
+          </>
+        )}
+
+        {/* ─── STEP 5 placeholder ─── */}
+        {currentStep === 5 && (
           <Card
             className="border border-border bg-card text-center"
             style={{ borderRadius: theme.radius.card }}
           >
             <CardContent className="p-16">
               <p className="font-body text-lg text-muted-foreground">
-                Step {currentStep} will be built next.
+                Step 5 will be built next.
               </p>
             </CardContent>
           </Card>
