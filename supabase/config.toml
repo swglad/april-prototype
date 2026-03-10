@@ -1,1 +1,4 @@
 project_id = "acrrocdvogikumdshrbd"
+
+[functions.generate-april-summary]
+verify_jwt = false
