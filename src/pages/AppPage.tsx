@@ -383,7 +383,7 @@ const AppPage = () => {
                 variant="hero"
                 size="xl"
                 className="flex-1 font-heading text-lg"
-                disabled
+                onClick={() => goToStep(4)}
               >
               View Your Summary →
               </Button>
