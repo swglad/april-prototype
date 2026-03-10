@@ -83,7 +83,7 @@ export function computeSummaryStats(analyses: DebtAnalysis[]): SummaryStats {
   const minResult = simulatePayoff(
     analyses.map((a) => ({ ...a })),
     0,
-    "minimum"
+    "minimum",
   );
 
   return {
@@ -116,7 +116,7 @@ const MAX_MONTHS = 600; // 50 year safety cap
 export function simulatePayoff(
   debts: SimDebt[],
   surplus: number,
-  strategy: "minimum" | "avalanche" | "snowball"
+  strategy: "minimum" | "avalanche" | "snowball",
 ): Omit<ScenarioResult, "label" | "strategy" | "interestSavedVsMinimum"> {
   // Deep copy
   let active = debts.map((d) => ({ ...d, balance: d.balance }));
@@ -148,7 +148,7 @@ export function simulatePayoff(
       d.balance -= payment;
       if (d.balance <= 0.01) {
         // Debt paid off — freed payment rolls forward
-        extraFreed += d.minimumPayment;
+        extraFreed += d.minimumPayment - payment; // only the unused portion
         d.balance = 0;
       }
     }
@@ -161,21 +161,29 @@ export function simulatePayoff(
     }
 
     if (extraPool > 0) {
-      // Sort active debts by strategy priority
-      const targets = active.filter((d) => d.balance > 0);
-      if (strategy === "avalanche") {
-        targets.sort((a, b) => b.apr - a.apr);
+      if (strategy === "minimum") {
+        // Freed minimums top up each debt's minimum only — no aggressive paydown
+        for (const d of active) {
+          if (d.balance <= 0 || extraPool <= 0) continue;
+          const topUp = Math.min(extraPool, d.balance);
+          d.balance -= topUp;
+          extraPool -= topUp;
+          if (d.balance <= 0.01) d.balance = 0;
+        }
       } else {
-        // snowball or minimum (freed payments go to smallest)
-        targets.sort((a, b) => a.balance - b.balance);
-      }
-
-      for (const target of targets) {
-        if (extraPool <= 0) break;
-        const apply = Math.min(extraPool, target.balance);
-        target.balance -= apply;
-        extraPool -= apply;
-        if (target.balance <= 0.01) target.balance = 0;
+        const targets = active.filter((d) => d.balance > 0);
+        if (strategy === "avalanche") {
+          targets.sort((a, b) => b.apr - a.apr);
+        } else {
+          targets.sort((a, b) => a.balance - b.balance);
+        }
+        for (const target of targets) {
+          if (extraPool <= 0) break;
+          const apply = Math.min(extraPool, target.balance);
+          target.balance -= apply;
+          extraPool -= apply;
+          if (target.balance <= 0.01) target.balance = 0;
+        }
       }
     }
 
