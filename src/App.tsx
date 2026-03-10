@@ -8,6 +8,7 @@ import Mission from "./pages/Mission";
 import Team from "./pages/Team";
 import Tutorial from "./pages/Tutorial";
 import AppPage from "./pages/AppPage";
+import ThemeEditor from "./pages/ThemeEditor";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/team" element={<Team />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/app" element={<AppPage />} />
+          <Route path="/theme-editor" element={<ThemeEditor />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
