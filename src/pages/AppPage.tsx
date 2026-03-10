@@ -4,6 +4,7 @@ import { theme } from "@/theme/config";
 import DebtCard, { DebtEntry, DebtType } from "@/components/app/DebtCard";
 import CostBreakdown from "@/components/app/CostBreakdown";
 import ScenarioSimulation from "@/components/app/ScenarioSimulation";
+import PersonalSummary from "@/components/app/PersonalSummary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
