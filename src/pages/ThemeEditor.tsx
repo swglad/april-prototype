@@ -40,10 +40,10 @@ const COLOR_LABELS: Record<keyof ThemeColors, string> = {
 
 const ThemeEditor = () => {
   const [colors, setColors] = useState<ThemeColors>({ ...defaultTheme.colors });
-  const [fonts, setFonts] = useState<ThemeFonts>({ ...defaultTheme.fonts });
-  const [brandName, setBrandName] = useState(defaultTheme.brand.name);
-  const [tagline, setTagline] = useState(defaultTheme.brand.tagline);
-  const [logoSrc, setLogoSrc] = useState(defaultTheme.logo.src);
+  const [fonts, setFonts] = useState<{ heading: string; body: string }>({ ...defaultTheme.fonts });
+  const [brandName, setBrandName] = useState<string>(defaultTheme.brand.name);
+  const [tagline, setTagline] = useState<string>(defaultTheme.brand.tagline);
+  const [logoSrc, setLogoSrc] = useState<string>(defaultTheme.logo.src);
   const [selectedPairing, setSelectedPairing] = useState("Playfair Display + Inter");
 
   const handleColorChange = useCallback((key: keyof ThemeColors, value: string) => {
