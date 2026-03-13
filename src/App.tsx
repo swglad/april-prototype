@@ -9,6 +9,7 @@ import Team from "./pages/Team";
 import Tutorial from "./pages/Tutorial";
 import AppPage from "./pages/AppPage";
 import ThemeEditor from "./pages/ThemeEditor";
+import BehindTheMath from "./pages/BehindTheMath";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/app" element={<AppPage />} />
           <Route path="/theme-editor" element={<ThemeEditor />} />
+          <Route path="/behind-the-math" element={<BehindTheMath />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

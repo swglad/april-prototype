@@ -127,6 +127,10 @@ All colors MUST be HSL.
     display: none !important;
   }
 
+  .behind-the-math-page {
+    display: none !important;
+  }
+
   body {
     background: white !important;
     color: black !important;
