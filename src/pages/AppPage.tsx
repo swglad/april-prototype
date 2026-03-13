@@ -426,7 +426,7 @@ const AppPage = () => {
           {/* ─── STEP 4: Personal Summary ─── */}
           {currentStep === 4 && (
             <>
-              <PersonalSummary debts={debtInputs} surplus={surplusNum} onGoToStep={goToStep} />
+              <PersonalSummary debts={debtInputs} surplus={surplusNum} onGoToStep={goToStep} contextNotes={chatTranscript} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
                 <Button variant="outline" size="lg" onClick={() => goToStep(3)} className="gap-2">
                   <ArrowLeft size={16} />
