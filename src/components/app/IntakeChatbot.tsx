@@ -29,7 +29,7 @@ const OPENING_MESSAGE: ChatMessage = {
 };
 
 const IntakeChatbot = ({ onTranscriptChange }: IntakeChatbotProps) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
