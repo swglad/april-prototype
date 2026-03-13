@@ -102,7 +102,7 @@ function validatePayload(body: unknown): ValidatedDebtData | null {
 
   const min = d.minimum as Record<string, unknown> | undefined;
   if (!min || typeof min !== 'object') return null;
-  const minTotalInterest = validateNumber(min.totalInterest, 0, 100_000_000);
+  const minTotalInterest = validateNumber(min.totalInterest, 0, 1_000_000_000_000);
   const minMonthsToPayoff = validateNumber(min.monthsToPayoff, 0, 10000);
   if (minTotalInterest === null || minMonthsToPayoff === null) return null;
 
