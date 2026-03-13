@@ -2,6 +2,7 @@ import { theme } from "@/theme/config";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -15,8 +16,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { CreditCard, Handshake, Car, GraduationCap, Trash2, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { CreditCard, Handshake, Car, GraduationCap, Trash2, ChevronDown, AlertTriangle } from "lucide-react";
+import { useState, useMemo } from "react";
 
 export type DebtType = "credit_card" | "personal_loan" | "auto_loan" | "student_loan" | "";
 
