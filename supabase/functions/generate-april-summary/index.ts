@@ -167,7 +167,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    const userPrompt = `Here is the user's pre-computed debt data. Use these exact figures — do not recalculate anything.
+    // Extract and sanitize optional contextNotes
+    const rawContextNotes = rawBody.contextNotes;
+    const contextNotesStr = typeof rawContextNotes === 'string'
+      ? rawContextNotes.replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 2000).trim()
+      : '';
+
+    let userPrompt = `Here is the user's pre-computed debt data. Use these exact figures — do not recalculate anything.
 
 Total debt accounts: ${data.debtCount}
 Total balance: $${data.totalBalance.toFixed(2)}
@@ -181,10 +187,13 @@ Monthly surplus available: $${data.surplus.toFixed(2)}
 
 Minimum-only scenario: ${data.minimum.monthsToPayoff} months, $${data.minimum.totalInterest.toFixed(2)} total interest
 Avalanche scenario: ${data.avalanche.monthsToPayoff} months, $${data.avalanche.totalInterest.toFixed(2)} total interest, saves $${data.avalanche.interestSaved.toFixed(2)} and ${data.avalanche.monthsSaved} months vs minimums
-Snowball scenario: ${data.snowball.monthsToPayoff} months, $${data.snowball.totalInterest.toFixed(2)} total interest, saves $${data.snowball.interestSaved.toFixed(2)} and ${data.snowball.monthsSaved} months vs minimums
+Snowball scenario: ${data.snowball.monthsToPayoff} months, $${data.snowball.totalInterest.toFixed(2)} total interest, saves $${data.snowball.interestSaved.toFixed(2)} and ${data.snowball.monthsSaved} months vs minimums`;
 
-Respond with valid JSON only, no markdown:
-{"sections":{"bigPicture":"...","costDriver":"...","surplusImpact":"...","disclaimer":"..."}}`;
+    if (contextNotesStr) {
+      userPrompt += `\n\ncontextNotes from the user's intake conversation:\n${contextNotesStr}`;
+    }
+
+    userPrompt += `\n\nRespond with valid JSON only, no markdown:\n{"sections":{"bigPicture":"...","costDriver":"...","surplusImpact":"...","disclaimer":"..."}}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
