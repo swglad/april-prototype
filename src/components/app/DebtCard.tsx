@@ -2,6 +2,7 @@ import { theme } from "@/theme/config";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -15,8 +16,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { CreditCard, Handshake, Car, GraduationCap, Trash2, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { CreditCard, Handshake, Car, GraduationCap, Trash2, ChevronDown, AlertTriangle } from "lucide-react";
+import { useState, useMemo } from "react";
 
 export type DebtType = "credit_card" | "personal_loan" | "auto_loan" | "student_loan" | "";
 
@@ -52,6 +53,18 @@ const DebtCard = ({ debt, index, errors, onChange, onRemove }: DebtCardProps) =>
   const IconComponent = config?.icon;
   const fieldPrefix = `debt-${debt.id}`;
 
+  // Calculate monthly interest and check if minimum payment covers it
+  const { monthlyInterest, isMinimumInsufficient } = useMemo(() => {
+    const balance = parseFloat(debt.balance) || 0;
+    const apr = parseFloat(debt.apr) || 0;
+    const minimumPayment = parseFloat(debt.minimumPayment) || 0;
+    const monthlyInt = (balance * (apr / 100)) / 12;
+    return {
+      monthlyInterest: monthlyInt,
+      isMinimumInsufficient: minimumPayment > 0 && minimumPayment < monthlyInt,
+    };
+  }, [debt.balance, debt.apr, debt.minimumPayment]);
+
   return (
     <Card
       className="relative border border-border bg-card overflow-hidden transition-shadow hover:shadow-md"
@@ -63,6 +76,14 @@ const DebtCard = ({ debt, index, errors, onChange, onRemove }: DebtCardProps) =>
       {debt.isExample && (
         <div className="bg-muted px-4 py-2 text-xs font-body italic text-muted-foreground border-b border-border">
           Example — tap to edit or remove
+        </div>
+      )}
+      {isMinimumInsufficient && (
+        <div className="bg-destructive/10 px-4 py-2 border-b border-destructive/20 flex items-center gap-2">
+          <AlertTriangle size={14} className="text-destructive flex-shrink-0" />
+          <span className="text-xs font-body text-destructive">
+            Minimum payment (${parseFloat(debt.minimumPayment || "0").toFixed(2)}) is less than monthly interest (${monthlyInterest.toFixed(2)}) — balance will grow at minimums
+          </span>
         </div>
       )}
       <CardContent className="p-6 sm:p-8">
