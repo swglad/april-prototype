@@ -423,7 +423,7 @@ const AppPage = () => {
           )}
 
           {/* ─── STEP 3: Scenario Simulation ─── */}
-          {currentStep === 3 && (
+          {currentStep === 3 && !showReferral && (
             <>
               <ScenarioSimulation debts={debtInputs} surplus={surplusNum} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
