@@ -1,6 +1,7 @@
 const ALLOWED_ORIGINS = [
   'https://april-prototype.lovable.app',
   'https://id-preview--b70e1edc-da90-4e8a-a46b-f40d950d9974.lovable.app',
+  'https://b70e1edc-da90-4e8a-a46b-f40d950d9974.lovableproject.com',
 ];
 
 function getCorsHeaders(req: Request) {
