@@ -27,6 +27,7 @@ const App = () => (
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/app" element={<AppPage />} />
           <Route path="/theme-editor" element={<ThemeEditor />} />
+          <Route path="/behind-the-math" element={<BehindTheMath />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
