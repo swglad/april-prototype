@@ -77,6 +77,7 @@ const AppPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showSurplusWarning, setShowSurplusWarning] = useState(false);
   const [stepTransition, setStepTransition] = useState(false);
+  const [chatTranscript, setChatTranscript] = useState("");
 
   const completeness = useMemo(() => computeCompleteness(surplus, debts), [surplus, debts]);
 
