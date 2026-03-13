@@ -78,6 +78,14 @@ const DebtCard = ({ debt, index, errors, onChange, onRemove }: DebtCardProps) =>
           Example — tap to edit or remove
         </div>
       )}
+      {isMinimumInsufficient && (
+        <div className="bg-destructive/10 px-4 py-2 border-b border-destructive/20 flex items-center gap-2">
+          <AlertTriangle size={14} className="text-destructive flex-shrink-0" />
+          <span className="text-xs font-body text-destructive">
+            Minimum payment (${parseFloat(debt.minimumPayment || "0").toFixed(2)}) is less than monthly interest (${monthlyInterest.toFixed(2)}) — balance will grow at minimums
+          </span>
+        </div>
+      )}
       <CardContent className="p-6 sm:p-8">
         <div className="flex items-start gap-4 sm:gap-6">
           {/* Icon */}
