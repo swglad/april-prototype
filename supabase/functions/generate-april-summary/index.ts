@@ -117,7 +117,9 @@ function validatePayload(body: unknown): ValidatedDebtData | null {
   };
 }
 
-const SYSTEM_PROMPT = `You are APRil's empathetic financial education assistant. Your voice is warm, clear, non-judgmental, and empowering — like a knowledgeable friend who happens to understand finance deeply. Generate a plain-language debt summary using only the exact figures provided. Do not perform any calculations — all numbers are pre-computed and must be used exactly as given. Never recommend specific financial products, refinancing, consolidation, or investment strategies. Never imply the user made poor decisions. Never use the words: should, must, bad debt, dangerous, wasting, mistake, or wrong. Use: could, one option is, many people find, this approach tends to. Format response as four sections: bigPicture, costDriver, surplusImpact, disclaimer. Keep each section under 60 words. Tone: a therapist who also has a CFA.`;
+const SYSTEM_PROMPT = `You are APRil's empathetic financial education assistant. Your voice is warm, clear, non-judgmental, and empowering — like a knowledgeable friend who happens to understand finance deeply. Generate a plain-language debt summary using only the exact figures provided. Do not perform any calculations — all numbers are pre-computed and must be used exactly as given. Never recommend specific financial products, refinancing, consolidation, or investment strategies. Never imply the user made poor decisions. Never use the words: should, must, bad debt, dangerous, wasting, mistake, or wrong. Use: could, one option is, many people find, this approach tends to. Format response as four sections: bigPicture, costDriver, surplusImpact, disclaimer. Keep each section under 60 words. Tone: a therapist who also has a CFA.
+
+If contextNotes is provided, use the information to personalize the tone and framing of the summary — for example, acknowledging income variability or upcoming expenses the user mentioned. Do not repeat their words back verbatim. Weave the context naturally and only where relevant. Never use contextNotes to make recommendations or go beyond debt education.`;
 
 Deno.serve(async (req) => {
   const corsHeaders = getCorsHeaders(req);
@@ -165,7 +167,13 @@ Deno.serve(async (req) => {
       );
     }
 
-    const userPrompt = `Here is the user's pre-computed debt data. Use these exact figures — do not recalculate anything.
+    // Extract and sanitize optional contextNotes
+    const rawContextNotes = rawBody.contextNotes;
+    const contextNotesStr = typeof rawContextNotes === 'string'
+      ? rawContextNotes.replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 2000).trim()
+      : '';
+
+    let userPrompt = `Here is the user's pre-computed debt data. Use these exact figures — do not recalculate anything.
 
 Total debt accounts: ${data.debtCount}
 Total balance: $${data.totalBalance.toFixed(2)}
@@ -179,10 +187,13 @@ Monthly surplus available: $${data.surplus.toFixed(2)}
 
 Minimum-only scenario: ${data.minimum.monthsToPayoff} months, $${data.minimum.totalInterest.toFixed(2)} total interest
 Avalanche scenario: ${data.avalanche.monthsToPayoff} months, $${data.avalanche.totalInterest.toFixed(2)} total interest, saves $${data.avalanche.interestSaved.toFixed(2)} and ${data.avalanche.monthsSaved} months vs minimums
-Snowball scenario: ${data.snowball.monthsToPayoff} months, $${data.snowball.totalInterest.toFixed(2)} total interest, saves $${data.snowball.interestSaved.toFixed(2)} and ${data.snowball.monthsSaved} months vs minimums
+Snowball scenario: ${data.snowball.monthsToPayoff} months, $${data.snowball.totalInterest.toFixed(2)} total interest, saves $${data.snowball.interestSaved.toFixed(2)} and ${data.snowball.monthsSaved} months vs minimums`;
 
-Respond with valid JSON only, no markdown:
-{"sections":{"bigPicture":"...","costDriver":"...","surplusImpact":"...","disclaimer":"..."}}`;
+    if (contextNotesStr) {
+      userPrompt += `\n\ncontextNotes from the user's intake conversation:\n${contextNotesStr}`;
+    }
+
+    userPrompt += `\n\nRespond with valid JSON only, no markdown:\n{"sections":{"bigPicture":"...","costDriver":"...","surplusImpact":"...","disclaimer":"..."}}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',

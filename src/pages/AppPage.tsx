@@ -6,6 +6,7 @@ import CostBreakdown from "@/components/app/CostBreakdown";
 import ScenarioSimulation from "@/components/app/ScenarioSimulation";
 import PersonalSummary from "@/components/app/PersonalSummary";
 import UpdateRecalculate from "@/components/app/UpdateRecalculate";
+import IntakeChatbot from "@/components/app/IntakeChatbot";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -76,6 +77,7 @@ const AppPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showSurplusWarning, setShowSurplusWarning] = useState(false);
   const [stepTransition, setStepTransition] = useState(false);
+  const [chatTranscript, setChatTranscript] = useState("");
 
   const completeness = useMemo(() => computeCompleteness(surplus, debts), [surplus, debts]);
 
@@ -357,6 +359,9 @@ const AppPage = () => {
                 )}
               </div>
 
+              {/* Intake Chatbot */}
+              <IntakeChatbot onTranscriptChange={setChatTranscript} />
+
               {/* Submit Button */}
               <Button
                 type="button"
@@ -421,7 +426,7 @@ const AppPage = () => {
           {/* ─── STEP 4: Personal Summary ─── */}
           {currentStep === 4 && (
             <>
-              <PersonalSummary debts={debtInputs} surplus={surplusNum} onGoToStep={goToStep} />
+              <PersonalSummary debts={debtInputs} surplus={surplusNum} onGoToStep={goToStep} contextNotes={chatTranscript} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
                 <Button variant="outline" size="lg" onClick={() => goToStep(3)} className="gap-2">
                   <ArrowLeft size={16} />

@@ -11,11 +11,13 @@ import {
   formatCurrencyCents,
 } from "@/lib/debtEngine";
 import { supabase } from "@/integrations/supabase/client";
+import SummaryChat from "@/components/app/SummaryChat";
 
 interface PersonalSummaryProps {
   debts: DebtInput[];
   surplus: number;
   onGoToStep: (step: number) => void;
+  contextNotes?: string;
 }
 
 interface SummarySections {
@@ -25,7 +27,7 @@ interface SummarySections {
   disclaimer: string;
 }
 
-const PersonalSummary = ({ debts, surplus, onGoToStep }: PersonalSummaryProps) => {
+const PersonalSummary = ({ debts, surplus, onGoToStep, contextNotes }: PersonalSummaryProps) => {
   const analyses = useMemo(() => analyzeDebts(debts), [debts]);
   const scenarios = useMemo(() => runAllScenarios(debts, surplus), [debts, surplus]);
 
@@ -107,7 +109,7 @@ const PersonalSummary = ({ debts, surplus, onGoToStep }: PersonalSummaryProps) =
         };
 
         const { data, error } = await supabase.functions.invoke("generate-april-summary", {
-          body: payload,
+          body: { ...payload, ...(contextNotes ? { contextNotes } : {}) },
         });
 
         if (cancelled) return;
@@ -299,6 +301,36 @@ const PersonalSummary = ({ debts, surplus, onGoToStep }: PersonalSummaryProps) =
               Print / Save as PDF
             </Button>
           </div>
+
+          {/* Summary Q&A Chatbot */}
+          <SummaryChat
+            debtData={{
+              totalBalance,
+              totalMonthlyInterest,
+              debtCount: debts.length,
+              costliestDebt: {
+                nickname: costliest.nickname,
+                apr: costliest.apr,
+                monthlyInterest: costliest.monthlyInterest,
+                annualInterest: costliest.annualInterest,
+              },
+              surplus,
+              avalanche: {
+                totalInterest: avalancheScenario.totalInterestPaid,
+                monthsToPayoff: avalancheScenario.monthsToPayoff,
+                interestSaved: avalancheScenario.interestSavedVsMinimum,
+              },
+              snowball: {
+                totalInterest: snowballScenario.totalInterestPaid,
+                monthsToPayoff: snowballScenario.monthsToPayoff,
+                interestSaved: snowballScenario.interestSavedVsMinimum,
+              },
+              minimum: {
+                totalInterest: minimumScenario.totalInterestPaid,
+                monthsToPayoff: minimumScenario.monthsToPayoff,
+              },
+            }}
+          />
         </>
       )}
     </div>
