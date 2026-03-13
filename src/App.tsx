@@ -9,6 +9,7 @@ import Team from "./pages/Team";
 import Tutorial from "./pages/Tutorial";
 import AppPage from "./pages/AppPage";
 import ThemeEditor from "./pages/ThemeEditor";
+import BehindTheMath from "./pages/BehindTheMath";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

@@ -7,6 +7,7 @@ const footerLinks = [
   { label: "Our Mission", to: "/mission" },
   { label: "Our Team", to: "/team" },
   { label: "Get Started", to: "/app" },
+  { label: "Behind the Math", to: "/behind-the-math" },
 ];
 
 const Footer = () => {
