@@ -109,7 +109,7 @@ const PersonalSummary = ({ debts, surplus, onGoToStep, contextNotes }: PersonalS
         };
 
         const { data, error } = await supabase.functions.invoke("generate-april-summary", {
-          body: payload,
+          body: { ...payload, ...(contextNotes ? { contextNotes } : {}) },
         });
 
         if (cancelled) return;
