@@ -396,8 +396,13 @@ const AppPage = () => {
             </>
           )}
 
+          {/* ─── Referral Screen ─── */}
+          {showReferral && currentStep !== 1 && currentStep !== 5 && (
+            <ReferralScreen onUpdateEntries={() => { setShowReferral(false); goToStep(1); }} />
+          )}
+
           {/* ─── STEP 2: Cost Breakdown ─── */}
-          {currentStep === 2 && (
+          {currentStep === 2 && !showReferral && (
             <>
               <CostBreakdown debts={debtInputs} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
