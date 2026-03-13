@@ -134,9 +134,22 @@ const AppPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const checkReferralConditions = (): boolean => {
+    const scenarios = runAllScenarios(debtInputs, surplusNum);
+    const totalBalance = debtInputs.reduce((s, d) => s + d.balance, 0);
+    const allOver240 = scenarios.every((s) => s.monthsToPayoff > 240);
+    const allInterestOver5M = scenarios.every((s) => s.totalInterestPaid > 5_000_000);
+    return allOver240 || totalBalance > 5_000_000 || allInterestOver5M;
+  };
+
   const handleSubmit = () => {
     setSubmitted(true);
     if (!validate()) return;
+    if (checkReferralConditions()) {
+      setShowReferral(true);
+      return;
+    }
+    setShowReferral(false);
     goToStep(2);
   };
 
