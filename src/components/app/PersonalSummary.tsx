@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, RotateCcw, Eye, TrendingUp, AlertCircle, Lightbulb } from "lucide-react";
 import type { DebtInput } from "@/lib/debtEngine";
-import {
+import SummaryChat from "@/components/app/SummaryChat";
   analyzeDebts,
   runAllScenarios,
   formatCurrency,
