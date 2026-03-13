@@ -53,6 +53,18 @@ const DebtCard = ({ debt, index, errors, onChange, onRemove }: DebtCardProps) =>
   const IconComponent = config?.icon;
   const fieldPrefix = `debt-${debt.id}`;
 
+  // Calculate monthly interest and check if minimum payment covers it
+  const { monthlyInterest, isMinimumInsufficient } = useMemo(() => {
+    const balance = parseFloat(debt.balance) || 0;
+    const apr = parseFloat(debt.apr) || 0;
+    const minimumPayment = parseFloat(debt.minimumPayment) || 0;
+    const monthlyInt = (balance * (apr / 100)) / 12;
+    return {
+      monthlyInterest: monthlyInt,
+      isMinimumInsufficient: minimumPayment > 0 && minimumPayment < monthlyInt,
+    };
+  }, [debt.balance, debt.apr, debt.minimumPayment]);
+
   return (
     <Card
       className="relative border border-border bg-card overflow-hidden transition-shadow hover:shadow-md"
