@@ -7,6 +7,7 @@ import ScenarioSimulation from "@/components/app/ScenarioSimulation";
 import PersonalSummary from "@/components/app/PersonalSummary";
 import UpdateRecalculate from "@/components/app/UpdateRecalculate";
 import IntakeChatbot from "@/components/app/IntakeChatbot";
+import ReferralScreen from "@/components/app/ReferralScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Plus, Star, AlertTriangle, CheckCircle2, ArrowLeft } from "lucide-react";
-import type { DebtInput } from "@/lib/debtEngine";
+import { type DebtInput, runAllScenarios } from "@/lib/debtEngine";
 
 const steps = [
   { number: 1, label: "Your Debts" },
@@ -78,6 +79,7 @@ const AppPage = () => {
   const [showSurplusWarning, setShowSurplusWarning] = useState(false);
   const [stepTransition, setStepTransition] = useState(false);
   const [chatTranscript, setChatTranscript] = useState("");
+  const [showReferral, setShowReferral] = useState(false);
 
   const completeness = useMemo(() => computeCompleteness(surplus, debts), [surplus, debts]);
 
@@ -132,9 +134,23 @@ const AppPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const checkReferralConditions = (): boolean => {
+    const scenarios = runAllScenarios(debtInputs, surplusNum);
+    const totalBalance = debtInputs.reduce((s, d) => s + d.balance, 0);
+    const allOver240 = scenarios.every((s) => s.monthsToPayoff > 240);
+    const allInterestOver5M = scenarios.every((s) => s.totalInterestPaid > 5_000_000);
+    return allOver240 || totalBalance > 5_000_000 || allInterestOver5M;
+  };
+
   const handleSubmit = () => {
     setSubmitted(true);
     if (!validate()) return;
+    if (checkReferralConditions()) {
+      setShowReferral(true);
+      goToStep(2); // advance past Step 1 so referral screen renders
+      return;
+    }
+    setShowReferral(false);
     goToStep(2);
   };
 
@@ -381,8 +397,13 @@ const AppPage = () => {
             </>
           )}
 
+          {/* ─── Referral Screen ─── */}
+          {showReferral && currentStep !== 1 && currentStep !== 5 && (
+            <ReferralScreen onUpdateEntries={() => { setShowReferral(false); goToStep(1); }} />
+          )}
+
           {/* ─── STEP 2: Cost Breakdown ─── */}
-          {currentStep === 2 && (
+          {currentStep === 2 && !showReferral && (
             <>
               <CostBreakdown debts={debtInputs} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
@@ -403,7 +424,7 @@ const AppPage = () => {
           )}
 
           {/* ─── STEP 3: Scenario Simulation ─── */}
-          {currentStep === 3 && (
+          {currentStep === 3 && !showReferral && (
             <>
               <ScenarioSimulation debts={debtInputs} surplus={surplusNum} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
@@ -424,7 +445,7 @@ const AppPage = () => {
           )}
 
           {/* ─── STEP 4: Personal Summary ─── */}
-          {currentStep === 4 && (
+          {currentStep === 4 && !showReferral && (
             <>
               <PersonalSummary debts={debtInputs} surplus={surplusNum} onGoToStep={goToStep} contextNotes={chatTranscript} />
               <div className="flex items-center gap-4 mt-10 print:hidden">
