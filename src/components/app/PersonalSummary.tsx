@@ -301,6 +301,36 @@ const PersonalSummary = ({ debts, surplus, onGoToStep, contextNotes }: PersonalS
               Print / Save as PDF
             </Button>
           </div>
+
+          {/* Summary Q&A Chatbot */}
+          <SummaryChat
+            debtData={{
+              totalBalance,
+              totalMonthlyInterest,
+              debtCount: debts.length,
+              costliestDebt: {
+                nickname: costliest.nickname,
+                apr: costliest.apr,
+                monthlyInterest: costliest.monthlyInterest,
+                annualInterest: costliest.annualInterest,
+              },
+              surplus,
+              avalanche: {
+                totalInterest: avalancheScenario.totalInterestPaid,
+                monthsToPayoff: avalancheScenario.monthsToPayoff,
+                interestSaved: avalancheScenario.interestSavedVsMinimum,
+              },
+              snowball: {
+                totalInterest: snowballScenario.totalInterestPaid,
+                monthsToPayoff: snowballScenario.monthsToPayoff,
+                interestSaved: snowballScenario.interestSavedVsMinimum,
+              },
+              minimum: {
+                totalInterest: minimumScenario.totalInterestPaid,
+                monthsToPayoff: minimumScenario.monthsToPayoff,
+              },
+            }}
+          />
         </>
       )}
     </div>
