@@ -147,6 +147,7 @@ const AppPage = () => {
     if (!validate()) return;
     if (checkReferralConditions()) {
       setShowReferral(true);
+      goToStep(2); // advance past Step 1 so referral screen renders
       return;
     }
     setShowReferral(false);
