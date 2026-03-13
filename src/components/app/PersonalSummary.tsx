@@ -27,7 +27,7 @@ interface SummarySections {
   disclaimer: string;
 }
 
-const PersonalSummary = ({ debts, surplus, onGoToStep }: PersonalSummaryProps) => {
+const PersonalSummary = ({ debts, surplus, onGoToStep, contextNotes }: PersonalSummaryProps) => {
   const analyses = useMemo(() => analyzeDebts(debts), [debts]);
   const scenarios = useMemo(() => runAllScenarios(debts, surplus), [debts, surplus]);
 
