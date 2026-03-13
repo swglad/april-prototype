@@ -4,18 +4,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, RotateCcw, Eye, TrendingUp, AlertCircle, Lightbulb } from "lucide-react";
 import type { DebtInput } from "@/lib/debtEngine";
-import SummaryChat from "@/components/app/SummaryChat";
+import {
   analyzeDebts,
   runAllScenarios,
   formatCurrency,
   formatCurrencyCents,
 } from "@/lib/debtEngine";
 import { supabase } from "@/integrations/supabase/client";
+import SummaryChat from "@/components/app/SummaryChat";
 
 interface PersonalSummaryProps {
   debts: DebtInput[];
   surplus: number;
   onGoToStep: (step: number) => void;
+  contextNotes?: string;
 }
 
 interface SummarySections {
