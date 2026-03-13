@@ -7,6 +7,7 @@ import ScenarioSimulation from "@/components/app/ScenarioSimulation";
 import PersonalSummary from "@/components/app/PersonalSummary";
 import UpdateRecalculate from "@/components/app/UpdateRecalculate";
 import IntakeChatbot from "@/components/app/IntakeChatbot";
+import ReferralScreen from "@/components/app/ReferralScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
