@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Plus, Star, AlertTriangle, CheckCircle2, ArrowLeft } from "lucide-react";
-import type { DebtInput } from "@/lib/debtEngine";
+import { type DebtInput, runAllScenarios } from "@/lib/debtEngine";
 
 const steps = [
   { number: 1, label: "Your Debts" },
