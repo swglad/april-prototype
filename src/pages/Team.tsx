@@ -1,45 +1,38 @@
 import Layout from "@/components/Layout";
-import { theme } from "@/theme/config";
-import { Linkedin } from "lucide-react";
+import { User } from "lucide-react";
 
 interface TeamMember {
   name: string;
   role: string;
   bio: string;
   photo?: string;
-  linkedin?: string;
 }
 
 const teamMembers: TeamMember[] = [
   {
-    name: "Jordan Lee",
-    role: "Founder & Lead Designer",
-    bio: "Jordan spent a decade in fintech design before realizing most tools serve the lender, not the borrower. They started APRil to flip that script. Their mission is making financial data feel human.",
-    linkedin: "#",
+    name: "Kat P.",
+    role: "Co-Founder & CEO",
+    bio: "Kat brings deep expertise in financial markets, risk management, and data-driven decision-making from her career as a VP in Equity Trading at J.P. Morgan. At APRil, she leads overall strategy and product vision — translating complex financial mechanics into tools that give everyday users the clarity they deserve. If APRil has a north star, Kat is holding it.",
   },
   {
-    name: "Sam Patel",
-    role: "Lead Engineer",
-    bio: "Sam builds systems that make complex math feel simple. Previously at a major payments company, now obsessed with making interest rates legible. They believe clarity is a feature, not a luxury.",
-    linkedin: "#",
+    name: "Scott G.",
+    role: "Co-Founder & Chief Product Officer",
+    bio: "Scott spent his career as a Senior Investment Strategist at BlackRock developing and commercializing data-driven investment solutions. At APRil, he owns the product roadmap and ensures the debt prioritization engine is both economically rigorous and genuinely intuitive. He's the reason APRil's math is sound and its design makes sense.",
   },
   {
-    name: "Maya Chen",
-    role: "Financial Educator",
-    bio: "Maya taught personal finance at the community college level for six years. She ensures every word in APRil is clear, accurate, and jargon-free. Her goal: no one should feel lost reading their own numbers.",
-    linkedin: "#",
+    name: "Helen A.",
+    role: "Co-Founder & Head of Consumer Financial Strategy",
+    bio: "As SVP at Bessemer Trust, Helen has spent her career providing personalized financial planning and wealth management to high-net-worth families — including deep advisory work on debt, investment allocation, and long-term planning. At APRil, she shapes how the product speaks to users: with empathy, precision, and zero judgment.",
   },
   {
-    name: "Alex Rivera",
-    role: "Product Manager",
-    bio: "Alex coordinates the roadmap and listens to users. Their background in behavioral economics shapes how APRil guides decisions without being pushy. They believe the best product is the one people actually use.",
-    linkedin: "#",
+    name: "David K.",
+    role: "Co-Founder & CTO",
+    bio: "David is a serial fintech entrepreneur who has built a regional B2B marketplace, a payment platform, and a utility billing app from the ground up. He leads APRil's technical architecture and infrastructure — bringing the hard-won instincts of a founder who has scaled digital platforms before. When something needs to be built, David builds it.",
   },
   {
-    name: "Taylor Brooks",
-    role: "Data & Privacy Lead",
-    bio: "Taylor makes sure your data stays yours. With a background in security engineering, they architected APRil's privacy-first approach from day one. Trust is earned, and Taylor takes that seriously.",
-    linkedin: "#",
+    name: "Daniel T.",
+    role: "Co-Founder & Head of Engineering",
+    bio: "Daniel is a finance and technology professional specializing in data analytics, system design, and AI integration in financial services. At APRil, he translates the debt optimization logic into a scalable, reliable digital system — bridging the gap between financial theory and working code. He is the reason the engine runs.",
   },
 ];
 
@@ -48,10 +41,10 @@ const Team = () => {
     <Layout>
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         <h1 className="font-heading text-4xl font-bold text-foreground text-center sm:text-5xl">
-          The team behind {theme.brand.name}
+          The team behind APRil.
         </h1>
         <p className="mt-4 text-center text-lg text-muted-foreground font-body max-w-2xl mx-auto">
-          A small, dedicated group building tools for financial clarity.
+          Five finance and technology professionals who built APRil because they believe debt clarity is a form of care.
         </p>
 
         <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -59,9 +52,8 @@ const Team = () => {
             <div
               key={member.name}
               className="rounded-xl border border-border bg-card p-6 text-center"
-              style={{ borderRadius: theme.radius.card }}
             >
-              {/* Circular photo placeholder */}
+              {/* Circular photo placeholder - mauve bg with person icon */}
               <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 overflow-hidden">
                 {member.photo ? (
                   <img
@@ -70,43 +62,24 @@ const Team = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="font-heading text-2xl font-bold text-primary">
-                    {member.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </span>
+                  <User size={40} className="text-primary" />
                 )}
               </div>
 
-              {/* Name */}
+              {/* Name - Playfair Display */}
               <h3 className="font-heading text-lg font-semibold text-foreground">
                 {member.name}
               </h3>
 
-              {/* Role */}
-              <p className="text-sm font-body text-primary font-medium mt-0.5">
+              {/* Role - small forest green caps */}
+              <p className="text-sm font-body text-secondary font-medium mt-0.5 uppercase tracking-wide">
                 {member.role}
               </p>
 
-              {/* Bio (3 sentences) */}
+              {/* Bio - Inter body text */}
               <p className="mt-3 text-sm text-muted-foreground font-body leading-relaxed">
                 {member.bio}
               </p>
-
-              {/* LinkedIn */}
-              {member.linkedin && (
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm font-body text-secondary hover:text-secondary/80 transition-colors"
-                  aria-label={`${member.name} LinkedIn profile`}
-                >
-                  <Linkedin size={16} />
-                  <span>LinkedIn</span>
-                </a>
-              )}
             </div>
           ))}
         </div>
