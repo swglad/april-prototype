@@ -88,9 +88,9 @@ function validatePayload(body: unknown): ValidatedDebtData | null {
   function validateScenario(s: unknown): { interestSaved: number; monthsSaved: number; totalInterest: number; monthsToPayoff: number } | null {
     if (!s || typeof s !== 'object') return null;
     const sc = s as Record<string, unknown>;
-    const interestSaved = validateNumber(sc.interestSaved, -100_000_000, 100_000_000);
+    const interestSaved = validateNumber(sc.interestSaved, -1_000_000_000_000, 1_000_000_000_000);
     const monthsSaved = validateNumber(sc.monthsSaved, -10000, 10000);
-    const totalInterest = validateNumber(sc.totalInterest, 0, 100_000_000);
+    const totalInterest = validateNumber(sc.totalInterest, 0, 1_000_000_000_000);
     const monthsToPayoff = validateNumber(sc.monthsToPayoff, 0, 10000);
     if (interestSaved === null || monthsSaved === null || totalInterest === null || monthsToPayoff === null) return null;
     return { interestSaved, monthsSaved, totalInterest, monthsToPayoff };
