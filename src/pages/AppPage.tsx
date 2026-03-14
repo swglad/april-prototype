@@ -177,8 +177,13 @@ const AppPage = () => {
   };
 
   const handleStartOver = () => {
-    setDebts([createEmptyDebt()]);
-    setSurplus("");
+    if (isDemoMode) {
+      setDebts(createDemoDebts());
+      setSurplus(DEMO_SURPLUS);
+    } else {
+      setDebts([createEmptyDebt()]);
+      setSurplus("");
+    }
     setErrors({});
     setSubmitted(false);
     setShowSurplusWarning(false);
