@@ -1,15 +1,15 @@
 import type { DebtEntry } from "@/components/app/DebtCard";
 
-export const DEMO_SURPLUS = "425";
+export const DEMO_SURPLUS = "650";
 
 export const createDemoDebts = (): DebtEntry[] => [
   {
     id: crypto.randomUUID(),
-    nickname: "Chase Sapphire",
+    nickname: "Chase Freedom",
     type: "credit_card",
-    balance: "8400",
-    apr: "24.99",
-    minimumPayment: "168",
+    balance: "6400",
+    apr: "27.99",
+    minimumPayment: "165",
     promoExpiration: "",
   },
   {
@@ -17,26 +17,26 @@ export const createDemoDebts = (): DebtEntry[] => [
     nickname: "Sallie Mae",
     type: "student_loan",
     balance: "22500",
-    apr: "6.80",
+    apr: "5.50",
     minimumPayment: "245",
-    promoExpiration: "",
-  },
-  {
-    id: crypto.randomUUID(),
-    nickname: "Toyota Auto",
-    type: "auto_loan",
-    balance: "14200",
-    apr: "7.49",
-    minimumPayment: "287",
     promoExpiration: "",
   },
   {
     id: crypto.randomUUID(),
     nickname: "Marcus Personal",
     type: "personal_loan",
-    balance: "5800",
-    apr: "19.50",
-    minimumPayment: "142",
+    balance: "3000",
+    apr: "13.50",
+    minimumPayment: "85",
+    promoExpiration: "",
+  },
+  {
+    id: crypto.randomUUID(),
+    nickname: "Toyota Corolla 2009",
+    type: "auto_loan",
+    balance: "4200",
+    apr: "7.49",
+    minimumPayment: "105",
     promoExpiration: "",
   },
 ];
