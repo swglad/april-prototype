@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { theme } from "@/theme/config";
 import DebtCard, { DebtEntry, DebtType } from "@/components/app/DebtCard";
@@ -8,6 +8,8 @@ import PersonalSummary from "@/components/app/PersonalSummary";
 import UpdateRecalculate from "@/components/app/UpdateRecalculate";
 import IntakeChatbot from "@/components/app/IntakeChatbot";
 import ReferralScreen from "@/components/app/ReferralScreen";
+import { useDemoMode } from "@/contexts/DemoModeContext";
+import { DEMO_SURPLUS, createDemoDebts } from "@/lib/demoData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
