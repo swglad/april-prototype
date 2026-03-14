@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { theme } from "@/theme/config";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useDemoMode } from "@/contexts/DemoModeContext";
 
 const navLinks = [
   { label: "Home", to: "/" },
