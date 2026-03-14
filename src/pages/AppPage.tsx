@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { theme } from "@/theme/config";
 import DebtCard, { DebtEntry, DebtType } from "@/components/app/DebtCard";
@@ -8,6 +8,8 @@ import PersonalSummary from "@/components/app/PersonalSummary";
 import UpdateRecalculate from "@/components/app/UpdateRecalculate";
 import IntakeChatbot from "@/components/app/IntakeChatbot";
 import ReferralScreen from "@/components/app/ReferralScreen";
+import { useDemoMode } from "@/contexts/DemoModeContext";
+import { DEMO_SURPLUS, createDemoDebts } from "@/lib/demoData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,6 +73,7 @@ function parseNum(val: string): number {
 }
 
 const AppPage = () => {
+  const { isDemoMode } = useDemoMode();
   const [currentStep, setCurrentStep] = useState(1);
   const [surplus, setSurplus] = useState("");
   const [debts, setDebts] = useState<DebtEntry[]>([exampleDebt]);
@@ -80,6 +83,16 @@ const AppPage = () => {
   const [stepTransition, setStepTransition] = useState(false);
   const [chatTranscript, setChatTranscript] = useState("");
   const [showReferral, setShowReferral] = useState(false);
+  const [demoInitialized, setDemoInitialized] = useState(false);
+
+  // Pre-populate with demo data when isDemoMode is active
+  useEffect(() => {
+    if (isDemoMode && !demoInitialized) {
+      setDebts(createDemoDebts());
+      setSurplus(DEMO_SURPLUS);
+      setDemoInitialized(true);
+    }
+  }, [isDemoMode, demoInitialized]);
 
   const completeness = useMemo(() => computeCompleteness(surplus, debts), [surplus, debts]);
 
@@ -164,8 +177,13 @@ const AppPage = () => {
   };
 
   const handleStartOver = () => {
-    setDebts([createEmptyDebt()]);
-    setSurplus("");
+    if (isDemoMode) {
+      setDebts(createDemoDebts());
+      setSurplus(DEMO_SURPLUS);
+    } else {
+      setDebts([createEmptyDebt()]);
+      setSurplus("");
+    }
     setErrors({});
     setSubmitted(false);
     setShowSurplusWarning(false);
@@ -376,7 +394,7 @@ const AppPage = () => {
               </div>
 
               {/* Intake Chatbot */}
-              <IntakeChatbot onTranscriptChange={setChatTranscript} />
+              <IntakeChatbot onTranscriptChange={setChatTranscript} isDemoMode={isDemoMode} />
 
               {/* Submit Button */}
               <Button

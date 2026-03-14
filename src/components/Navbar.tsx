@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { theme } from "@/theme/config";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useDemoMode } from "@/contexts/DemoModeContext";
 
 const navLinks = [
   { label: "Home", to: "/" },
@@ -14,6 +15,7 @@ const navLinks = [
 const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isDemoMode } = useDemoMode();
 
   const isActive = (to: string) => {
     if (to.startsWith("/#")) return location.pathname === "/" && location.hash === to.slice(1);
@@ -63,6 +65,26 @@ const Navbar = () => {
             </Button>
           </Link>
         </div>
+
+        {/* Demo Mode Badge */}
+        {isDemoMode && (
+          <span
+            className="hidden md:inline-flex items-center px-2.5 py-1 text-xs font-medium text-white rounded-full select-none"
+            style={{ backgroundColor: "hsl(145, 63%, 32%)", fontFamily: "Inter, sans-serif", fontSize: "12px" }}
+          >
+            Demo Mode
+          </span>
+        )}
+
+        {/* Demo Mode Badge (mobile) */}
+        {isDemoMode && (
+          <span
+            className="md:hidden inline-flex items-center px-2.5 py-1 text-xs font-medium text-white rounded-full select-none"
+            style={{ backgroundColor: "hsl(145, 63%, 32%)", fontFamily: "Inter, sans-serif", fontSize: "12px" }}
+          >
+            Demo Mode
+          </span>
+        )}
 
         {/* Mobile toggle */}
         <button

@@ -4,6 +4,7 @@ import { ChevronRight, ChevronDown, Send, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
+import { DEMO_CHAT_HISTORY } from "@/lib/demoData";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -12,6 +13,7 @@ interface ChatMessage {
 
 interface IntakeChatbotProps {
   onTranscriptChange: (transcript: string) => void;
+  isDemoMode?: boolean;
 }
 
 function sanitizeInput(val: string): string {
@@ -28,7 +30,7 @@ const OPENING_MESSAGE: ChatMessage = {
     "Hi — I'm here if you'd like to share anything about your financial situation that might add context to your debt picture. You might mention things like income variability, upcoming expenses, or how long you've been managing these debts. I'm not here to give advice — just to listen and help personalize your summary. What's on your mind?",
 };
 
-const IntakeChatbot = ({ onTranscriptChange }: IntakeChatbotProps) => {
+const IntakeChatbot = ({ onTranscriptChange, isDemoMode = false }: IntakeChatbotProps) => {
   const [expanded, setExpanded] = useState(true);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -36,13 +38,17 @@ const IntakeChatbot = ({ onTranscriptChange }: IntakeChatbotProps) => {
   const [initialized, setInitialized] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Initialize with opening message on first expand
+  // Initialize with opening message (or demo history) on first expand
   useEffect(() => {
     if (expanded && !initialized) {
-      setMessages([OPENING_MESSAGE]);
+      if (isDemoMode) {
+        setMessages(DEMO_CHAT_HISTORY as ChatMessage[]);
+      } else {
+        setMessages([OPENING_MESSAGE]);
+      }
       setInitialized(true);
     }
-  }, [expanded, initialized]);
+  }, [expanded, initialized, isDemoMode]);
 
   // Auto-scroll
   useEffect(() => {
