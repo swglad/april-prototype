@@ -394,7 +394,7 @@ const AppPage = () => {
               </div>
 
               {/* Intake Chatbot */}
-              <IntakeChatbot onTranscriptChange={setChatTranscript} />
+              <IntakeChatbot onTranscriptChange={setChatTranscript} isDemoMode={isDemoMode} />
 
               {/* Submit Button */}
               <Button
