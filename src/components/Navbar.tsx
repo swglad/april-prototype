@@ -76,6 +76,16 @@ const Navbar = () => {
           </span>
         )}
 
+        {/* Demo Mode Badge (mobile) */}
+        {isDemoMode && (
+          <span
+            className="md:hidden inline-flex items-center px-2.5 py-1 text-xs font-medium text-white rounded-full select-none"
+            style={{ backgroundColor: "hsl(145, 63%, 32%)", fontFamily: "Inter, sans-serif", fontSize: "12px" }}
+          >
+            Demo Mode
+          </span>
+        )}
+
         {/* Mobile toggle */}
         <button
           className="md:hidden p-2 text-foreground"
