@@ -73,6 +73,7 @@ function parseNum(val: string): number {
 }
 
 const AppPage = () => {
+  const { isDemoMode } = useDemoMode();
   const [currentStep, setCurrentStep] = useState(1);
   const [surplus, setSurplus] = useState("");
   const [debts, setDebts] = useState<DebtEntry[]>([exampleDebt]);
@@ -82,6 +83,16 @@ const AppPage = () => {
   const [stepTransition, setStepTransition] = useState(false);
   const [chatTranscript, setChatTranscript] = useState("");
   const [showReferral, setShowReferral] = useState(false);
+  const [demoInitialized, setDemoInitialized] = useState(false);
+
+  // Pre-populate with demo data when isDemoMode is active
+  useEffect(() => {
+    if (isDemoMode && !demoInitialized) {
+      setDebts(createDemoDebts());
+      setSurplus(DEMO_SURPLUS);
+      setDemoInitialized(true);
+    }
+  }, [isDemoMode, demoInitialized]);
 
   const completeness = useMemo(() => computeCompleteness(surplus, debts), [surplus, debts]);
 
