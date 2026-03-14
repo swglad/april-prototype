@@ -4,6 +4,7 @@ import { ChevronRight, ChevronDown, Send, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
+import { DEMO_CHAT_HISTORY } from "@/lib/demoData";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -12,6 +13,7 @@ interface ChatMessage {
 
 interface IntakeChatbotProps {
   onTranscriptChange: (transcript: string) => void;
+  isDemoMode?: boolean;
 }
 
 function sanitizeInput(val: string): string {
