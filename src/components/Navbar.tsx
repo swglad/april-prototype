@@ -15,6 +15,7 @@ const navLinks = [
 const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isDemoMode } = useDemoMode();
 
   const isActive = (to: string) => {
     if (to.startsWith("/#")) return location.pathname === "/" && location.hash === to.slice(1);
